@@ -1,17 +1,29 @@
-# This is a sample Python script.
+#Import Info
+import json
+import requests
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+#Bring in spreadsheet with usernames
+usernames = open("usernames.txt").read().splitlines()
+
+#For each user pull the current information from the FAH servers
+for each in usernames:
+    url = 'https://api.foldingathome.org/user/' + str(each)
+    print(url)
+    #Clean up the responce
+    user_info = requests.get(url).json()
+
+    #This is this persons USERID
+    userid = str((user_info['id']))
+    print(userid)
+
+    #BLOCK FOR TROUBSHOOTING
+    # print(user_info['teams'])
+    # for team in user_info['teams']:
+    #     print(team['team'])
+
+    for team in user_info['teams']:
+        if team['team'] == 223518:
+            ltt_score = team['score']
+            print(each + " current score is: " + str(ltt_score))
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
-#test
